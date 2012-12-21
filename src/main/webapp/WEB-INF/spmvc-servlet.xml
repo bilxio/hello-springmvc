@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+                http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+                http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <mvc:annotation-driven />
+
+    <context:component-scan base-package="com.github.hellospringmvc.controller">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+
+    <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+
+    <bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+    <bean id="handlerAdapter" class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="mappingJacksonHttpMessageConverter" /><!-- json转换器 -->
+            </list>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
+
+    <!--front app resources-->
+    <mvc:resources mapping="/static/**" location="/WEB-INF/resources/" />
+
+    <mvc:default-servlet-handler />
+
+    <!-- JSP视图 -->
+    <!--<bean id="irViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
+        <!--<property name="prefix" value="/WEB-INF/jsp/" />-->
+        <!--<property name="suffix" value=".jsp" />-->
+    <!--</bean>-->
+
+    <!-- Velocity视图 -->
+    <!--org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver-->
+    <bean id="velocityViewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+        <property name="cache" value="false" />
+        <property name="prefix" value="" />
+        <property name="suffix" value=".vm" />
+        <!-- 如果你需要使用Spring 对 Velocity宏命令的支持, 将这个属性设为true  -->
+        <property name="exposeSpringMacroHelpers" value="true" />
+        <property name="contentType" value="text/html;charset=UTF-8" />
+        <property name="order" value="1" />
+        <property name="exposeRequestAttributes" value="true"/>
+        <property name="requestContextAttribute" value="rc" />
+    </bean>
+
+    <!--Velocity 配置-->
+    <bean class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <property name="resourceLoaderPath" value="/WEB-INF/template" />
+        <property name="configLocation" value="classpath:velocity.properties" />
+    </bean>
+
+</beans>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Hello,  SpringMVC !</title>
+</head>
+<body>
+<h1>Hello,  SpringMVC !</h1>
+
+<br/>
+<h2>User list</h2>
+<ul>
+    #if($users.size() != 0)
+        #foreach($user in $users)
+            <li>${loopCounter} :  $user.username</li>
+        #end
+    #else
+        <li> No record found. </li>
+    #end
+</ul>
+
+<p>
+    record size:  $users.size()
+</p>
+
+<hr/>
+<p>
+    Copyright (c) 2012 Bill Xiong
+</p>
+</body>
+</html>
+
